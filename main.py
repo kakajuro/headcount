@@ -1,12 +1,15 @@
+import os
+from dotenv import load_dotenv
 import smtplib
 from email.mime.text import MIMEText
 
-subject = "Email Subject"
-body = "This is the body of \\\
-the text message"
-sender = "sender@gmail.com"
-recipients = ["reciever1@gmail.com"]
-password = "password"
+load_dotenv()
+
+subject = "This is a test subject"
+body = "This is a test email!!"
+sender = os.environ.get("EMAIL_2")
+recipients = [os.environ.get("EMAIL_2")]
+password = os.environ.get("EMAIL_PASSWORD_2")
 
 
 def send_email(subject, body, sender, recipients, password):
@@ -21,3 +24,4 @@ def send_email(subject, body, sender, recipients, password):
 
 
 send_email(subject, body, sender, recipients, password)
+
