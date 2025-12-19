@@ -4,13 +4,14 @@ const createAppsTable =
 `CREATE TABLE apps (
   id INTEGER PRIMARY KEY,
   name STRING NOT NULL
+  shortname STRING NOT NULL
 )`;
 
 const createUsercountTable =
 `CREATE TABLE usercounts (
   appid INTEGER NOT NULL,
-  usercount INTEGER,
-  date INTEGER
+  usercount INTEGER NOT NULL,
+  date INTEGER NOT NULL
 )`;
 
 const tableQuery = "PRAGMA table_info(apps);";
