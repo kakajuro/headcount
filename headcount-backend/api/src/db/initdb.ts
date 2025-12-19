@@ -8,9 +8,11 @@ const createAppsTable =
 )`;
 
 const createUsercountTable =
-`CREATE TABLE usercounts (
+`CREATE TABLE counts (
   appid INTEGER NOT NULL,
-  usercount INTEGER NOT NULL,
+  usercountChrome INTEGER NOT NULL,
+  usercountFirefox INTEGER NOT NULL,
+  usercountEdge INTEGER NOT NULL,
   date INTEGER NOT NULL
 )`;
 
