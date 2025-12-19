@@ -1,0 +1,35 @@
+import db from "./db.ts";
+
+const createAppsTable =
+`CREATE TABLE apps (
+  id INTEGER PRIMARY KEY,
+  name STRING NOT NULL
+)`;
+
+const createUsercountTable =
+`CREATE TABLE usercounts (
+  appid INTEGER NOT NULL,
+  usercount INTEGER,
+  date INTEGER
+)`;
+
+const tableQuery = "PRAGMA table_info(apps);";
+const tableExists = db.prepare(tableQuery).get();
+
+if (tableExists === undefined) {
+
+  try {
+    db.exec(createAppsTable);
+    console.log("Created apps table");
+  } catch (error) {
+    console.log(`An error occurred: ${error}`)
+  }
+
+  try {
+    db.exec(createUsercountTable);
+    console.log("Created usercount table");
+  } catch (error) {
+    console.log(`An error occurred: ${error}`)
+  }
+
+}
