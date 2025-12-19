@@ -3,7 +3,7 @@ import db from "./db.ts";
 const createAppsTable =
 `CREATE TABLE apps (
   id INTEGER PRIMARY KEY,
-  name STRING NOT NULL
+  name STRING NOT NULL,
   shortname STRING NOT NULL
 )`;
 
