@@ -2,7 +2,7 @@ import db from "./db.ts";
 
 const createAppsTable =
 `CREATE TABLE apps (
-  id INTEGER PRIMARY KEY,
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
   name STRING NOT NULL,
   shortname STRING NOT NULL
 )`;
@@ -10,10 +10,10 @@ const createAppsTable =
 const createUsercountTable =
 `CREATE TABLE counts (
   appid INTEGER NOT NULL,
-  usercountChrome INTEGER NOT NULL,
-  usercountFirefox INTEGER NOT NULL,
-  usercountEdge INTEGER NOT NULL,
-  date INTEGER NOT NULL
+  usercountChrome INTEGER,
+  usercountFirefox INTEGER,
+  usercountEdge INTEGER,
+  created_at INTEGER NOT NULL
 )`;
 
 const tableQuery = "PRAGMA table_info(apps);";
