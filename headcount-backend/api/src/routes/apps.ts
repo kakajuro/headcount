@@ -8,7 +8,7 @@ interface app {
   shortname: string
 }
 
-apps.get('/all', (c) => {
+apps.get('/all', async (c) => {
 
   try {
     const query = "SELECT * FROM apps";
