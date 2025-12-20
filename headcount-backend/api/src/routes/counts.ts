@@ -4,7 +4,7 @@ import db from '../db/db.ts';
 const counts = new Hono();
 
 interface countAdd {
-  name: string,
+  shortname: string,
   usercountChrome: number,
   usercountFirefox: number,
   usercountEdge: number
@@ -12,6 +12,10 @@ interface countAdd {
 
 interface response {
   id: number
+}
+
+interface countResponse {
+  'COUNT(*)': string
 }
 
 counts.get("/all", async (c) => {
@@ -31,16 +35,30 @@ counts.get("/all", async (c) => {
 
 });
 
+// Use shortname
 counts.get("/all/:name", async (c) => {
 
   const name = c.req.param("name");
+
+  try {
+    const query = "SELECT COUNT(*) FROM apps WHERE shortname = ?";
+    const response = db.prepare(query).get(name) as countResponse;
+
+    if (!parseInt(response["COUNT(*)"], 10)) {
+      c.status(500);
+      return c.text("App with that shortname not found!")
+    }
+  } catch (error) {
+    c.status(500);
+    return c.text(`Internal server error occurred: ${error}`);
+  }
 
   try {
     const query =
     `SELECT A.name, C.usercountChrome, C.usercountFirefox, C.usercountEdge, C.created_at
     FROM counts AS c
     INNER JOIN apps as A ON C.appid = A.id
-    WHERE name = ?`;
+    WHERE A.shortname = ?`;
     const response = db.prepare(query).all(name);
     return c.json(response);
   } catch (error) {
@@ -50,6 +68,7 @@ counts.get("/all/:name", async (c) => {
 
 });
 
+// Use shortname
 counts.get("/recent/:name", async (c) => {
 
   const name = c.req.param("name");
@@ -58,11 +77,24 @@ counts.get("/recent/:name", async (c) => {
   const limitNum = parseInt(limit, 10);
 
   try {
+    const query = "SELECT COUNT(*) FROM apps WHERE shortname = ?";
+    const response = db.prepare(query).get(name) as countResponse;
+
+    if (!parseInt(response["COUNT(*)"], 10)) {
+      c.status(500);
+      return c.text("App with that shortname not found!")
+    }
+  } catch (error) {
+    c.status(500);
+    return c.text(`Internal server error occurred: ${error}`);
+  }
+
+  try {
     const query =
     `SELECT A.name, C.usercountChrome, C.usercountFirefox, C.usercountEdge, C.created_at
     FROM counts AS c
     INNER JOIN apps as A ON C.appid = A.id
-    WHERE name = ?
+    WHERE A.shortname = ?
     ORDER BY C.created_at DESC
     LIMIT ?`;
     const response = db.prepare(query).all(name, limitNum);
@@ -79,8 +111,8 @@ counts.post('/add', async (c) => {
   let body:countAdd = await c.req.json();
 
   try {
-    const query = `SELECT id FROM apps WHERE name = '${body.name}';`;
-    let response = await db.prepare(query).get() as response;
+    const query = `SELECT id FROM apps WHERE shortname = ?;`;
+    let response = await db.prepare(query).get(body.shortname) as response;
     var appID = response!.id;
   } catch (error) {
     c.status(500);
