@@ -68,6 +68,28 @@ counts.get("/all/:name", async (c) => {
 
 });
 
+counts.get("/recent", async (c) => {
+
+  try {
+    const query =
+    `SELECT A.name, C.usercountChrome, C.usercountFirefox, C.usercountEdge, C.created_at
+    FROM counts AS c
+    INNER JOIN apps as A ON C.appid = A.id
+    WHERE C.created_at = (
+      SELECT MAX(C2.created_at)
+      FROM counts AS C2
+      WHERE C2.appid = C.appid
+    )
+    ORDER BY C.created_at DESC`;
+    const response = db.prepare(query).all();
+    return c.json(response);
+  } catch (error) {
+    c.status(500);
+    return c.text(`Internal server error occurred: ${error}`);
+  }
+
+});
+
 // Use shortname
 counts.get("/recent/:name", async (c) => {
 
@@ -113,7 +135,7 @@ counts.post('/add', async (c) => {
   try {
     const query = `SELECT id FROM apps WHERE shortname = ?;`;
     let response = await db.prepare(query).get(body.shortname) as response;
-    var appID = response!.id;
+    var appID = response.id;
   } catch (error) {
     c.status(500);
     return c.text(`Internal server error occurred: ${error}`);
