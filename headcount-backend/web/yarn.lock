@@ -813,6 +813,13 @@ source-map-js@^1.2.1:
   resolved "https://registry.yarnpkg.com/source-map-js/-/source-map-js-1.2.1.tgz#1ce5650fddd87abc099eda37dcff024c2667ae46"
   integrity sha512-UXWMKhLOwVKb728IUtQPXxfYU+usdybtUrK/8uGE8CQMvrhOpwvzDBwj0QhSL7MQc7vIsISBG8VQ8+IDQxpfQA==
 
+sv-tooltip@^0.2.5:
+  version "0.2.5"
+  resolved "https://registry.yarnpkg.com/sv-tooltip/-/sv-tooltip-0.2.5.tgz#72bf35e54279840442ac884aedcff5fc00b1e519"
+  integrity sha512-x3PHpiemA36pdhsbdejsMCUYtk27MTmyMLA1wFu8WM2ZjZVUPfaP4HPoNaF0z8f7bcUMD9Aywt6njYVQUEfBrw==
+  dependencies:
+    svelte "^3.59.2"
+
 svelte-check@^4.3.4:
   version "4.3.5"
   resolved "https://registry.yarnpkg.com/svelte-check/-/svelte-check-4.3.5.tgz#2e9e05eca63fdb5523a37c666f47614d36c11212"
@@ -823,6 +830,11 @@ svelte-check@^4.3.4:
     fdir "^6.2.0"
     picocolors "^1.0.0"
     sade "^1.7.4"
+
+svelte@^3.59.2:
+  version "3.59.2"
+  resolved "https://registry.yarnpkg.com/svelte/-/svelte-3.59.2.tgz#a137b28e025a181292b2ae2e3dca90bf8ec73aec"
+  integrity sha512-vzSyuGr3eEoAtT/A6bmajosJZIUWySzY2CzB3w2pgPvnkUjGqlDnsNnA0PMO+mMAhuyMul6C2uuZzY6ELSkzyA==
 
 svelte@^5.45.6:
   version "5.46.0"

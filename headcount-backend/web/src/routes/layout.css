@@ -3,3 +3,7 @@
 @theme {
   --font-jost: "Jost", sans-serif;
 }
+
+*:focus {
+  outline: none;
+}
