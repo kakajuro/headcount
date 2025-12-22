@@ -16,7 +16,7 @@ export const load = async ({ fetch, params }) => {
 };
 
 export const actions = {
-	default: async (event) => {
+	add: async (event) => {
 
 		const data = await event.request.formData();
     const formObject = Object.fromEntries(data);
@@ -45,5 +45,28 @@ export const actions = {
       return fail(400, {error: error.message});
     }
 
-	}
+	},
+  delete: async (event) => {
+
+    const data = await event.request.formData();
+    const idObj = Object.fromEntries(data);
+
+    const rawResponse = await fetch(`${apiURL}/apps/delete`, {
+      method: "DELETE",
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(idObj)
+    });
+
+    const response = await rawResponse.json();
+
+    if (rawResponse.status === 500) {
+      throw new Error(response.error);
+    }
+
+    return { success: true };
+
+  }
 } satisfies Actions;

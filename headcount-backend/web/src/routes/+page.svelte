@@ -3,6 +3,8 @@
 
   import Tooltip from "sv-tooltip";
 
+  import { Trash2 } from "@lucide/svelte";
+
   let applistScreen = $state(true);
   let formError = $state(false);
 
@@ -27,18 +29,34 @@
     {#if applistScreen}
       <div class="flex flex-col w-auto items-start gap-1">
         {#each data.data as item}
-          <Tooltip
-            tip={`Chrome: ${item.usercountChrome} | Firefox: ${item.usercountFirefox} | Edge: ${item.usercountEdge}`}
-            color="coral"
-            right>
-            <p class="text-lg hover:cursor-default">{`${item.name} (${item.usercountChrome + item.usercountEdge + item.usercountFirefox} total users)`}</p>
-          </Tooltip>
+          <div class="flex flex-row gap-4 items-center justify-center">
+            <form
+              method="POST"
+              action="?/delete"
+              use:enhance={() => {
+                return async ({ update }) => {
+                  await update();
+                };
+              }}>
+              <input type="hidden" name="id" value={item.id} />
+              <button type="submit">
+                <Trash2 class="size-6 hover:text-red-600 hover:cursor-pointer transition-all ease-in-out" />
+              </button>
+            </form>
+            <Tooltip
+              tip={`Chrome: ${item.usercountChrome} | Firefox: ${item.usercountFirefox} | Edge: ${item.usercountEdge}`}
+              color="coral"
+              right>
+              <p class="text-lg hover:cursor-default">{`${item.name} (${item.usercountChrome + item.usercountEdge + item.usercountFirefox} total users)`}</p>
+            </Tooltip>
+          </div>
         {/each}
       </div>
     {:else}
       <div class="flex flex-col items-center justify-center">
         <form
           method="POST"
+          action="?/add"
           class="flex flex-col w-[50%]"
           use:enhance={() => {
 
@@ -64,7 +82,7 @@
             name="shortname"
             placeholder="enter app shortname"
           />
-          <button class="mt-4 mr-auto text-[#FF7F50] hover:cursor-pointer hover:underline">submit</button>
+          <button type="submit" class="mt-4 mr-auto text-[#FF7F50] hover:cursor-pointer hover:underline">submit</button>
         </form>
         {#if form?.error && formError}
           <p class="mt-4 text-red-500">{form.error}</p>
@@ -74,5 +92,3 @@
 
   </section>
 </main>
-
-
