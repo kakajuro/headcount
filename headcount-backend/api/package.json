@@ -10,7 +10,9 @@
   "dependencies": {
     "@hono/node-server": "^1.19.6",
     "better-sqlite3": "^12.5.0",
-    "hono": "^4.11.1"
+    "dotenv": "^17.2.3",
+    "hono": "^4.11.1",
+    "hono-rate-limiter": "^0.5.1"
   },
   "devDependencies": {
     "@types/better-sqlite3": "^7.6.13",
