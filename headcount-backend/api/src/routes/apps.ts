@@ -12,10 +12,9 @@ apps.get('/all', async (c) => {
   try {
     const query = "SELECT * FROM apps WHERE deleted = 0";
     const response = db.prepare(query).all();
-    return c.json(response);
-  } catch (error) {
-    c.status(500);
-    return c.text(`Internal server error occurred: ${error}`);
+    return c.json(response, 200);
+  } catch (error: any) {
+    return c.json({ error: error.message }, 500);
   }
 
 });
@@ -42,10 +41,8 @@ apps.post('/add', async (c) => {
       const insertData = db.prepare("INSERT INTO apps (name, shortname) VALUES (?, ?);");
       insertData.run(body.name, body.shortname);
       console.log("App added sucessfully");
-
-    } catch (error) {
-      c.status(500);
-      return c.text(`Internal server error occurred: ${error}`);
+    } catch (error:any) {
+      return c.json({ error: error.message }, 500);
     }
 
     // Make internal request to give new app a blank record
@@ -71,9 +68,8 @@ apps.post('/add', async (c) => {
 
       return c.json({ message: "App added sucessfully" }, 200);
 
-    } catch (error) {
-      c.status(500);
-      return c.text(`Internal server error occurred: ${error}`);
+    } catch (error:any) {
+      return c.json({ error: error.message }, 500);
     }
 
 
@@ -92,7 +88,7 @@ apps.delete('/delete', async (c) => {
     return c.json({message: "App deleted sucessfully"}, 200);
 
   } catch (error:any) {
-    return c.json({ message: `Internal server error occurred: ${error.message}` }, 500);
+    return c.json({ error: error.message }, 500);
   }
 
 });

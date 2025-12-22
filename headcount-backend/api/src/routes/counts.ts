@@ -15,10 +15,9 @@ counts.get("/all", async (c) => {
     WHERE A.deleted = 0;
     `;
     const response = db.prepare(query).all();
-    return c.json(response);
-  } catch (error) {
-    c.status(500);
-    return c.text(`Internal server error occurred: ${error}`);
+    return c.json(response, 200);
+  } catch (error:any) {
+    return c.json({ error: error.message }, 500);
   }
 
 });
@@ -33,12 +32,10 @@ counts.get("/all/:name", async (c) => {
     const response = db.prepare(query).get(name) as countResponse;
 
     if (!parseInt(response["COUNT(*)"], 10)) {
-      c.status(500);
-      return c.text("App with that shortname not found!")
+      throw new Error("App with that shortname not found!")
     }
-  } catch (error) {
-    c.status(500);
-    return c.text(`Internal server error occurred: ${error}`);
+  } catch (error:any) {
+    return c.json({ error: error.message }, 500);
   }
 
   try {
@@ -48,10 +45,9 @@ counts.get("/all/:name", async (c) => {
     INNER JOIN apps as A ON C.appid = A.id
     WHERE A.shortname = ?`;
     const response = db.prepare(query).all(name);
-    return c.json(response);
-  } catch (error) {
-    c.status(500);
-    return c.text(`Internal server error occurred: ${error}`);
+    return c.json(response, 200);
+  } catch (error:any) {
+    return c.json({ error: error.message }, 500);
   }
 
 });
@@ -70,10 +66,9 @@ counts.get("/recent", async (c) => {
     ) AND A.deleted = 0
     ORDER BY C.created_at DESC`;
     const response = db.prepare(query).all();
-    return c.json(response);
-  } catch (error) {
-    c.status(500);
-    return c.text(`Internal server error occurred: ${error}`);
+    return c.json(response, 200);
+  } catch (error:any) {
+    return c.json({ error: error.message }, 500);
   }
 
 });
@@ -91,12 +86,10 @@ counts.get("/recent/:name", async (c) => {
     const response = db.prepare(query).get(name) as countResponse;
 
     if (!parseInt(response["COUNT(*)"], 10)) {
-      c.status(500);
-      return c.text("App with that shortname not found!")
+      throw new Error("App with that shortname not found!")
     }
-  } catch (error) {
-    c.status(500);
-    return c.text(`Internal server error occurred: ${error}`);
+  } catch (error:any) {
+    return c.json({ error: error.message }, 500);
   }
 
   try {
@@ -108,10 +101,9 @@ counts.get("/recent/:name", async (c) => {
     ORDER BY C.created_at DESC
     LIMIT ?`;
     const response = db.prepare(query).all(name, limitNum);
-    return c.json(response);
-  } catch (error) {
-    c.status(500);
-    return c.text(`Internal server error occurred: ${error}`);
+    return c.json(response, 200);
+  } catch (error:any) {
+    return c.json({ error: error.message }, 500);
   }
 
 });
@@ -124,9 +116,8 @@ counts.post('/add', async (c) => {
     const query = `SELECT id FROM apps WHERE shortname = ?;`;
     let response = await db.prepare(query).get(body.shortname) as response;
     var appID = response.id;
-  } catch (error) {
-    c.status(500);
-    return c.text(`Internal server error occurred: ${error}`);
+  } catch (error:any) {
+    return c.json({ error: error.message }, 500);
   }
 
   try {
@@ -135,11 +126,9 @@ counts.post('/add', async (c) => {
     const unixTimestamp = Math.floor(Date.now() / 1000);
     const insertData = db.prepare(query);
     insertData.run(appID, body.usercountChrome, body.usercountFirefox, body.usercountEdge, unixTimestamp);
-    c.status(200);
-    return c.text("Count added sucessfully!");
-  } catch (error) {
-    c.status(500);
-    return c.text(`Internal server error occurred: ${error}`);
+    return c.json({ message: "Count added sucessfully!" }, 200);
+  } catch (error:any) {
+    return c.json({ error: error.message }, 500);
   }
 
 });
