@@ -6,8 +6,12 @@ interface appData {
   usercountEdge: number
 }
 
+
 interface Props {
   data: {
     data: appData[];
   };
+  form? : {
+    error: string
+  }
 }

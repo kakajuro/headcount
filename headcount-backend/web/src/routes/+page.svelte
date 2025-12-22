@@ -1,10 +1,12 @@
 <script lang="ts">
-  import { onMount } from "svelte";
+  import { enhance } from "$app/forms";
+
   import Tooltip from "sv-tooltip";
 
   let applistScreen = $state(true);
+  let formError = $state(false);
 
-  let { data }: Props = $props();
+  let { data, form }: Props = $props();
 
 </script>
 
@@ -29,13 +31,29 @@
             tip={`Chrome: ${item.usercountChrome} | Firefox: ${item.usercountFirefox} | Edge: ${item.usercountEdge}`}
             color="coral"
             right>
-            <p class="text-lg hover:cursor-default">{`${item.name} (${item.usercountChrome + item.usercountEdge + item.usercountFirefox} users)`}</p>
+            <p class="text-lg hover:cursor-default">{`${item.name} (${item.usercountChrome + item.usercountEdge + item.usercountFirefox} total users)`}</p>
           </Tooltip>
         {/each}
       </div>
     {:else}
-      <div class="flex items-center justify-center">
-        <form class="flex flex-col w-[50%]">
+      <div class="flex flex-col items-center justify-center">
+        <form
+          method="POST"
+          class="flex flex-col w-[50%]"
+          use:enhance={() => {
+
+            return async ({ result, update }) => {
+              if (result.type === 'success') {
+                applistScreen = true;
+                await update();
+              } else if (result.type === 'failure') {
+                formError = true;
+                await update();
+              }
+            }
+
+          }}
+        >
           <p class="text-lg pb-1">new app name</p>
           <input
             name="name"
@@ -48,6 +66,9 @@
           />
           <button class="mt-4 mr-auto text-[#FF7F50] hover:cursor-pointer hover:underline">submit</button>
         </form>
+        {#if form?.error && formError}
+          <p class="mt-4 text-red-500">{form.error}</p>
+        {/if}
       </div>
     {/if}
 

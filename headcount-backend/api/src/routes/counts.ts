@@ -1,22 +1,9 @@
 import { Hono } from 'hono'
 import db from '../db/db.ts';
 
+import type { countAdd, countResponse, response } from "../types.ts"
+
 const counts = new Hono();
-
-interface countAdd {
-  shortname: string,
-  usercountChrome: number,
-  usercountFirefox: number,
-  usercountEdge: number
-}
-
-interface response {
-  id: number
-}
-
-interface countResponse {
-  'COUNT(*)': string
-}
 
 counts.get("/all", async (c) => {
 
@@ -142,7 +129,6 @@ counts.post('/add', async (c) => {
   }
 
   try {
-
     let query = `INSERT INTO counts (appid, usercountChrome, usercountFirefox, usercountEdge, created_at) VALUES (?, ?, ?, ?, ?);`;
 
     const unixTimestamp = Math.floor(Date.now() / 1000);
