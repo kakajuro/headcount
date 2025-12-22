@@ -4,7 +4,8 @@ const createAppsTable =
 `CREATE TABLE apps (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   name STRING NOT NULL,
-  shortname STRING NOT NULL
+  shortname STRING NOT NULL,
+  deleted INTEGER DEFAULT 0
 )`;
 
 const createUsercountTable =
