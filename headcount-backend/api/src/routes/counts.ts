@@ -9,9 +9,10 @@ counts.get("/all", async (c) => {
 
   try {
     const query =
-    `SELECT A.name, C.usercountChrome, C.usercountFirefox, C.usercountEdge, C.created_at
+    `SELECT A.id, A.name, C.usercountChrome, C.usercountFirefox, C.usercountEdge, C.created_at
     FROM counts AS C
-    INNER JOIN apps AS A ON C.appid = A.id;
+    INNER JOIN apps AS A ON C.appid = A.id
+    WHERE A.deleted = 0;
     `;
     const response = db.prepare(query).all();
     return c.json(response);
@@ -42,7 +43,7 @@ counts.get("/all/:name", async (c) => {
 
   try {
     const query =
-    `SELECT A.name, C.usercountChrome, C.usercountFirefox, C.usercountEdge, C.created_at
+    `SELECT A.id, A.name, C.usercountChrome, C.usercountFirefox, C.usercountEdge, C.created_at
     FROM counts AS c
     INNER JOIN apps as A ON C.appid = A.id
     WHERE A.shortname = ?`;
@@ -59,14 +60,14 @@ counts.get("/recent", async (c) => {
 
   try {
     const query =
-    `SELECT A.name, C.usercountChrome, C.usercountFirefox, C.usercountEdge, C.created_at
+    `SELECT A.id, A.name, C.usercountChrome, C.usercountFirefox, C.usercountEdge, C.created_at
     FROM counts AS c
     INNER JOIN apps as A ON C.appid = A.id
     WHERE C.created_at = (
       SELECT MAX(C2.created_at)
       FROM counts AS C2
       WHERE C2.appid = C.appid
-    )
+    ) AND A.deleted = 0
     ORDER BY C.created_at DESC`;
     const response = db.prepare(query).all();
     return c.json(response);
@@ -100,7 +101,7 @@ counts.get("/recent/:name", async (c) => {
 
   try {
     const query =
-    `SELECT A.name, C.usercountChrome, C.usercountFirefox, C.usercountEdge, C.created_at
+    `SELECT A.id, A.name, C.usercountChrome, C.usercountFirefox, C.usercountEdge, C.created_at
     FROM counts AS c
     INNER JOIN apps as A ON C.appid = A.id
     WHERE A.shortname = ?

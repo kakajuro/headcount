@@ -1,7 +1,7 @@
 import { Hono } from 'hono'
 import db from '../db/db.ts';
 
-import type { app, countAdd, shortnameResponse } from '../types.ts';
+import type { app, appDelete, countAdd, shortnameResponse } from '../types.ts';
 
 const apps = new Hono();
 
@@ -10,7 +10,7 @@ apps.get('/all', async (c) => {
   console.log(new URL(c.req.url).host);
 
   try {
-    const query = "SELECT * FROM apps";
+    const query = "SELECT * FROM apps WHERE deleted = 0";
     const response = db.prepare(query).all();
     return c.json(response);
   } catch (error) {
@@ -26,10 +26,8 @@ apps.post('/add', async (c) => {
 
     // Check if duplicate shortname exists
     try {
-      const query = `SELECT COUNT(shortname) FROM apps WHERE shortname = ?`;
+      const query = `SELECT COUNT(shortname) FROM apps WHERE shortname = ? AND deleted = 0`;
       const response = db.prepare(query).get(body.shortname) as shortnameResponse;
-
-      console.log(response);
 
       if (parseInt(response["COUNT(shortname)"], 10) > 0) {
         console.log("found duplicate");
@@ -78,6 +76,24 @@ apps.post('/add', async (c) => {
       return c.text(`Internal server error occurred: ${error}`);
     }
 
+
+});
+
+apps.delete('/delete', async (c) => {
+
+  const body:appDelete = await c.req.json();
+
+  try {
+
+    const deleteRecord = db.prepare("UPDATE apps SET deleted = 1 WHERE id = ?");
+    deleteRecord.run(body.id);
+    console.log("App deleted sucessfully");
+
+    return c.json({message: "App deleted sucessfully"}, 200);
+
+  } catch (error:any) {
+    return c.json({ message: `Internal server error occurred: ${error.message}` }, 500);
+  }
 
 });
 

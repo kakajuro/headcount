@@ -4,6 +4,10 @@ export interface app {
   shortname: string
 }
 
+export interface appDelete {
+  id: number
+}
+
 export interface countAdd {
   shortname: string,
   usercountChrome: number,
