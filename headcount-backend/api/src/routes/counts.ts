@@ -20,7 +20,7 @@ counts.get("/all", async (c) => {
     return c.json(response, 200);
   } catch (error:any) {
     console.log(error.message);
-    return c.json({ error: error.message }, 500);
+    return c.json({ error: "Internal Server Error" }, 500);
   }
 
 });
@@ -38,7 +38,8 @@ counts.get("/all/:name", async (c) => {
       throw new Error("App with that shortname not found!")
     }
   } catch (error:any) {
-    return c.json({ error: error.message }, 500);
+    console.log(error.message);
+    return c.json({ error: "Internal Server Error" }, 500);
   }
 
   try {
@@ -50,7 +51,8 @@ counts.get("/all/:name", async (c) => {
     const response = db.prepare(query).all(name);
     return c.json(response, 200);
   } catch (error:any) {
-    return c.json({ error: error.message }, 500);
+    console.log(error.message);
+    return c.json({ error: "Internal Server Error" }, 500);
   }
 
 });
@@ -71,7 +73,8 @@ counts.get("/test", async (c) => {
     const response = db.prepare(query).all();
     return c.json(response, 200);
   } catch (error:any) {
-    return c.json({ error: error.message }, 500);
+    console.log(error.message);
+    return c.json({ error: "Internal Server Error" }, 500);
   }
 });
 
@@ -91,7 +94,8 @@ counts.get("/recent", async (c) => {
     const response = db.prepare(query).all();
     return c.json(response, 200);
   } catch (error:any) {
-    return c.json({ error: error.message }, 500);
+    console.log(error.message);
+    return c.json({ error: "Internal Server Error" }, 500);
   }
 
 });
@@ -113,7 +117,8 @@ counts.get("/recent/:name", async (c) => {
       throw new Error("App with that shortname not found!")
     }
   } catch (error:any) {
-    return c.json({ error: error.message }, 500);
+    console.log(error.message);
+    return c.json({ error: "Internal Server Error" }, 500);
   }
 
   try {
@@ -127,7 +132,8 @@ counts.get("/recent/:name", async (c) => {
     const response = db.prepare(query).all(name, limitNum);
     return c.json(response, 200);
   } catch (error:any) {
-    return c.json({ error: error.message }, 500);
+    console.log(error.message);
+    return c.json({ error: "Internal Server Error" }, 500);
   }
 
 });
@@ -138,7 +144,6 @@ counts.get('/weekly', async (c) => {
   var appShortnames:string[] = [];
   var weekData:countRecord[] = [];
 
-  // Add all shortnames to list
   try {
     const query = "SELECT shortname FROM apps WHERE deleted = 0";
     const response = db.prepare(query).all() as {shortname: string}[];
@@ -146,7 +151,8 @@ counts.get('/weekly', async (c) => {
       appShortnames.push(obj["shortname"]);
     });
   } catch (error: any) {
-    return c.json({ error: error.message }, 500);
+    console.log(error.message);
+    return c.json({ error: "Internal Server Error" }, 500);
   }
 
   try {
@@ -167,11 +173,9 @@ counts.get('/weekly', async (c) => {
       finalItemObj.userDifference = userDifference;
 
       weekData.push(finalItemObj);
-      console.log(weekData);
       console.log(`Calulated data for: ${name}`);
     }));
 
-    console.log(weekData);
     return c.json(weekData, 200);
 
   } catch (error:any) {
@@ -202,7 +206,8 @@ counts.post('/add', async (c) => {
     insertData.run(appID, body.usercountChrome, body.usercountFirefox, body.usercountEdge, unixTimestamp);
     return c.json({ message: "Count added sucessfully!" }, 200);
   } catch (error:any) {
-    return c.json({ error: error.message }, 500);
+    console.log(error.message);
+    return c.json({ error: "Internal Server Error" }, 500);
   }
 
 });

@@ -14,7 +14,8 @@ apps.get('/all', async (c) => {
     const response = db.prepare(query).all();
     return c.json(response, 200);
   } catch (error: any) {
-    return c.json({ error: error.message }, 500);
+    console.log(error.message);
+    return c.json({ error: "Internal Server Error" }, 500);
   }
 
 });
@@ -34,7 +35,8 @@ apps.post('/add', async (c) => {
       }
 
     } catch (error:any) {
-      return c.json({ error: error.message }, 500);
+      console.log(error.message);
+      return c.json({ error: "Internal Server Error" }, 500);
     }
 
     try {
@@ -69,7 +71,8 @@ apps.post('/add', async (c) => {
       return c.json({ message: "App added sucessfully" }, 200);
 
     } catch (error:any) {
-      return c.json({ error: error.message }, 500);
+      console.log(error.message);
+      return c.json({ error: "Internal Server Error" }, 500);
     }
 
 
@@ -88,7 +91,8 @@ apps.delete('/delete', async (c) => {
     return c.json({message: "App deleted sucessfully"}, 200);
 
   } catch (error:any) {
-    return c.json({ error: error.message }, 500);
+    console.log(error.message);
+    return c.json({ error: "Internal Server Error" }, 500);
   }
 
 });
