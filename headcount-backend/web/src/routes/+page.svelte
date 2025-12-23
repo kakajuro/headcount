@@ -47,7 +47,7 @@
               tip={`Chrome: ${item.usercountChrome} | Firefox: ${item.usercountFirefox} | Edge: ${item.usercountEdge}`}
               color="coral"
               right>
-              <p class="text-lg hover:cursor-default">{`${item.name} (${item.usercountChrome + item.usercountEdge + item.usercountFirefox} total users)`}</p>
+              <p class="text-lg hover:cursor-default">{`${item.name} (${item.shortname}) | ${item.usercountChrome + item.usercountEdge + item.usercountFirefox} total users`}</p>
             </Tooltip>
           </div>
         {/each}

@@ -2,6 +2,7 @@
 interface appData {
   id: number,
   name: string,
+  shortname: string,
   usercountChrome: number,
   usercountFirefox: number,
   usercountEdge: number
