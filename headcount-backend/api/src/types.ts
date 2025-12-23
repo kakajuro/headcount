@@ -15,6 +15,21 @@ export interface countAdd {
   usercountEdge: number
 }
 
+// Last 2 cannot be pulled from the db
+// Require /counts/week route
+// Added here so typescript doesn't scream at me
+export interface countRecord {
+  id: number,
+  shortname: string,
+  name: string,
+  usercountChrome: number,
+  usercountFirefox: number,
+  usercountEdge: number,
+  created_at: number
+  dayDifference?: number,
+  userDifference?: number
+}
+
 export interface response {
   id: number
 }
