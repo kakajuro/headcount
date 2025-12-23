@@ -9,7 +9,7 @@ counts.get("/all", async (c) => {
 
   try {
     const query =
-    `SELECT A.id, A.shortname A.name, C.usercountChrome, C.usercountFirefox, C.usercountEdge, C.created_at
+    `SELECT A.id, A.shortname, A.name, C.usercountChrome, C.usercountFirefox, C.usercountEdge, C.created_at
     FROM counts AS C
     INNER JOIN apps AS A ON C.appid = A.id
     WHERE A.deleted = 0;
@@ -17,6 +17,7 @@ counts.get("/all", async (c) => {
     const response = db.prepare(query).all();
     return c.json(response, 200);
   } catch (error:any) {
+    console.log(error.message);
     return c.json({ error: error.message }, 500);
   }
 
