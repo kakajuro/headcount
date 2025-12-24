@@ -49,7 +49,6 @@ app.get('/ok', (c) => {
 app.route('/apps', apps);
 app.route('/counts', counts);
 
-
 serve({
   fetch: app.fetch,
   port: 3000
