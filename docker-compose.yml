@@ -1,0 +1,11 @@
+
+services:
+
+  python:
+    container_name: python
+    build:
+      context: ./scripts/
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    env_file:
+      - ./scripts/.env

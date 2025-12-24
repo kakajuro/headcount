@@ -4,11 +4,10 @@ WORKDIR /app
 
 COPY requirements.txt ./
 
-RUN pip install --no-cache-dir pipenv && \
-    pipenv install --system --deploy --clear
+RUN pip install -r requirements.txt
 
 COPY *.py ./
 COPY .env ./
 
 # Sleep until cron job invokes a script
-CMD ["sleep", "infinty"]
+CMD ["sleep", "9999999999999d"]
