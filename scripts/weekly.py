@@ -13,21 +13,44 @@ if int(os.environ.get("IS_PRODUCTION")) == 0:
 else:
   api_url = os.environ.get("PRODUCTION_API_URL")
 
-# API call
-response = requests.get(f"{api_url}/counts/recent?limit=2").json()
-print(response)
-
-
 # Email setup
 subject = f'Extension Update: {datetime.datetime.now().strftime("%x")}'
-sender = os.environ.get("EMAIL_2")
-recipients = [os.environ.get("EMAIL_2")]
-password = os.environ.get("EMAIL_PASSWORD_2")
-body = "This is a test email!!"
+sender = os.environ.get("EMAIL")
+recipients = [os.environ.get("EMAIL")]
+password = os.environ.get("EMAIL_PASSWORD")
+body = f"""Extension usercounts for this week: \n"""
 
+# API call
+print("Fetching extension data")
+response = requests.get(f"{api_url}/counts/weekly").json()
 
+print("Formatting update email")
+for app in response:
+  totalUsers = app["usercountChrome"] + app["usercountFirefox"] + app["usercountEdge"]
+  sign = ""
+  daysCount = ""
 
-# with yagmail.SMTP({sender: "Hello"}, password) as yag:
-#   yag.send(to = {sender: sender}, subject=subject, contents=body)
-# print("Sent!")
+  if app["userDifference"] >= 0:
+    sign = "+"
+  elif app["userDifference"] < 0:
+    sign = "-"
+
+  if app["dayDifference"] == 7:
+    daysCount = "1 week ago"
+  else:
+    daysCount = f"{app["dayDifference"]} days ago"
+
+  dataString = f"""
+  {app["name"]} ({app["shortname"]}) has {totalUsers} users
+  ({sign}{app["userDifference"]} from {daysCount})
+  """
+
+  body += dataString
+
+print("Sending update email")
+
+with yagmail.SMTP({sender: "Hello"}, password) as yag:
+  yag.send(to = {sender: sender}, subject=subject, contents=body)
+
+print("Sent update to inbox!")
 
