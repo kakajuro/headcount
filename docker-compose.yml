@@ -17,9 +17,12 @@ services:
     build:
       context: ./headcount-backend/api
       dockerfile: Dockerfile
-      target: dev
+      target: runner
     restart: unless-stopped
+    volumes:
+      - ./headcount-backend/api/src/db/database.db:/app/src/db/database.db
     env_file:
       - ./headcount-backend/api/.env
     ports:
       - 8080:3000
+

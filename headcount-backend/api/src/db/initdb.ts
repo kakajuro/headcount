@@ -1,4 +1,6 @@
-import db from "./db.ts";
+import { createDB } from "./db.ts";
+
+let db = createDB();
 
 const createAppsTable =
 `CREATE TABLE apps (
