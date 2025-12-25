@@ -23,8 +23,6 @@ services:
       - ./headcount-backend/api/src/db/database.db:/app/src/db/database.db
     env_file:
       - ./headcount-backend/api/.env
-    ports:
-      - 8080:3000
     networks:
       - headcount
 
@@ -43,8 +41,6 @@ services:
       - IS_DOCKERISED=1
       - HOST=0.0.0.0
       - PORT=5173
-    ports:
-      - 5173:5173
     networks:
       - headcount
 

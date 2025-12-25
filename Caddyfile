@@ -1,0 +1,29 @@
+
+{$DOMAIN_NAME:domain.invalid} {
+  encode gzip
+	reverse_proxy web:5173
+}
+
+www.{$DOMAIN_NAME:domain.invalid} {
+    redir https://{$DOMAIN_NAME}{uri} permanent
+}
+
+ok.{$DOMAIN_NAME:domain.invalid} {
+  respond /health-check 200
+}
+
+api.{$DOMAIN_NAME:domain.invalid} {
+    reverse_proxy server:3000
+
+    header {
+        -X-Powered-By
+        -Server
+
+        Strict-Transport-Security max-age=31536000;
+
+        X-Frame-Options DENY
+
+        X-XSS-Protection "1; mode=block"
+    }
+
+}
