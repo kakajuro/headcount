@@ -1,4 +1,3 @@
-
 services:
 
   python:
@@ -17,7 +16,7 @@ services:
     build:
       context: ./headcount-backend/api
       dockerfile: Dockerfile
-      target: runner
+      target: dev
     restart: unless-stopped
     volumes:
       - ./headcount-backend/api/src/db/database.db:/app/src/db/database.db
@@ -33,7 +32,7 @@ services:
     build:
       context: ./headcount-backend/web
       dockerfile: Dockerfile
-      target: runner
+      target: dev
     restart: unless-stopped
     depends_on:
       - server
@@ -41,8 +40,6 @@ services:
       - ./headcount-backend/web/.env
     environment:
       - IS_DOCKERISED=1
-      - HOST=0.0.0.0
-      - PORT=5173
     ports:
       - 5173:5173
     networks:
@@ -52,5 +49,3 @@ networks:
   headcount:
     name: headcount
 
-  global-network:
-    external: true
