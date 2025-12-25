@@ -20,13 +20,17 @@ ENV WATCHPACK_POLLING=TRUE
 
 CMD ["yarn", "dev"]
 
+
 # Rebuild the source code only when needed
 FROM base AS builder
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
+ENV IS_DOCKERISED=1
+
 RUN yarn build
+
 
 # Prod image
 FROM base AS runner
@@ -37,5 +41,5 @@ COPY --from=builder /app/node_modules node_modules/
 
 COPY package.json .
 
-ENV IS_PRODUCTION=1
-CMD ["node", "server.js"]
+ENV IS_DOCKERISED=1
+CMD ["node", "build/index.js"]

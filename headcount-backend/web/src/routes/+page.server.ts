@@ -1,11 +1,23 @@
-import type { Actions } from './$types';
-import { PRODUCTION_API_URL } from '$env/static/private';
-import { dev } from '$app/environment';
-
 import { fail } from "@sveltejs/kit";
 
+import type { Actions } from './$types';
+import { PRODUCTION_API_URL, IS_DOCKERISED } from '$env/static/private';
+import { dev } from "$app/environment";
+
+
 let apiURL;
-dev ? apiURL = "http://localhost:3000" : apiURL = PRODUCTION_API_URL;
+
+if (IS_DOCKERISED == "1") {
+
+  if (dev) {
+    apiURL = "http://server:3000"
+  } else {
+    apiURL = PRODUCTION_API_URL;
+  }
+
+} else {
+  apiURL = "http://localhost:3000"
+}
 
 export const load = async ({ fetch, params }) => {
 
