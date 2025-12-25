@@ -1,3 +1,4 @@
+#!/bin/sh
 # Pull latest changes
 echo Pulling latests changes...
 git pull
