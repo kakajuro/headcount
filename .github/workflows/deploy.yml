@@ -1,0 +1,30 @@
+name: yml
+
+on:
+  workflow_run:
+    workflows: ["build-python", "build-server", "build-web"]
+    types:
+      - completed
+
+  workflow_dispatch:
+
+
+jobs:
+  cd:
+
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: SSH into VPS
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.PASSWORD }}
+          script: |
+            cd var/www/headcount
+            ./deploy.sh
