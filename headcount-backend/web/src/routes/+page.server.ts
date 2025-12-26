@@ -1,9 +1,11 @@
 import { fail } from "@sveltejs/kit";
 
 import type { Actions } from './$types';
-import { PRODUCTION_API_URL, IS_DOCKERISED } from '$env/static/private';
 import { dev } from "$app/environment";
 
+
+const IS_DOCKERISED = process.env.IS_DOCKERISED;
+const PRODUCTION_API_URL = process.env.PRODUCTION_API_URL;
 
 let apiURL;
 
