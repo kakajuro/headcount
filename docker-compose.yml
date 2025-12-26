@@ -2,7 +2,7 @@
 services:
 
   python:
-    container_name: python
+    container_name: headcount-python
     build:
       context: ./scripts/
       dockerfile: Dockerfile
@@ -11,9 +11,12 @@ services:
       - IS_DOCKERISED=1
     env_file:
       - ./scripts/.env
+    networks:
+      - headcount
+      - global-network
 
   server:
-    container_name: server
+    container_name: headcount-server
     build:
       context: ./headcount-backend/api
       dockerfile: Dockerfile
@@ -25,9 +28,10 @@ services:
       - ./headcount-backend/api/.env
     networks:
       - headcount
+      - global-network
 
   web:
-    container_name: web
+    container_name: headcount-web
     build:
       context: ./headcount-backend/web
       dockerfile: Dockerfile
@@ -43,6 +47,7 @@ services:
       - PORT=5173
     networks:
       - headcount
+      - global-network
 
 networks:
   headcount:
