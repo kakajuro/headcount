@@ -29,6 +29,10 @@ COPY . .
 
 ENV IS_DOCKERISED=1
 
+# Build args to build doesn't error
+ARG PRODUCTION_API_URL="http://example.com"
+ENV PRODCUTION_API_URL=${PRODUCTION_API_URL}
+
 RUN yarn build
 
 
