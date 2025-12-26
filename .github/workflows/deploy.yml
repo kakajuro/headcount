@@ -9,12 +9,12 @@ on:
   push:
     branches:
       - main
-    paths:
-      - .
-      - jobs/**
 
   workflow_dispatch:
 
+concurrency:
+  group: my-workflow-main
+  cancel-in-progress: true
 
 jobs:
   cd:
