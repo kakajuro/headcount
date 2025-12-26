@@ -1,4 +1,7 @@
 #!/bin/sh
+# Get lastest changes
+git pull
+
 # Make shell scripts executable
 chmod +x jobs/*.sh
 
