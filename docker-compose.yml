@@ -3,9 +3,7 @@ services:
 
   python:
     container_name: headcount-python
-    build:
-      context: ./scripts/
-      dockerfile: Dockerfile
+    image: ghcr.io/kakajuro/headcount-python:latest
     restart: unless-stopped
     environment:
       - IS_DOCKERISED=1
@@ -17,10 +15,7 @@ services:
 
   server:
     container_name: headcount-server
-    build:
-      context: ./headcount-backend/api
-      dockerfile: Dockerfile
-      target: runner
+    image: ghcr.io/kakajuro/headcount-server:latest
     restart: unless-stopped
     volumes:
       - ./headcount-backend/api/src/db/database.db:/app/src/db/database.db
@@ -32,10 +27,7 @@ services:
 
   web:
     container_name: headcount-web
-    build:
-      context: ./headcount-backend/web
-      dockerfile: Dockerfile
-      target: runner
+    image: ghcr.io/kakajuro/headcount-web:latest
     restart: unless-stopped
     depends_on:
       - server

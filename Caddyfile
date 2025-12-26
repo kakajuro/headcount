@@ -1,7 +1,7 @@
 
 {$DOMAIN_NAME:domain.invalid} {
   encode gzip
-	reverse_proxy web:5173
+	reverse_proxy headcount-web:5173
 }
 
 www.{$DOMAIN_NAME:domain.invalid} {
@@ -13,7 +13,7 @@ ok.{$DOMAIN_NAME:domain.invalid} {
 }
 
 api.{$DOMAIN_NAME:domain.invalid} {
-    reverse_proxy server:3000
+    reverse_proxy headcount-server:3000
 
     header {
         -X-Powered-By
