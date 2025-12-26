@@ -1,7 +1,6 @@
 #!/bin/sh
-# Pull latest changes
-echo Pulling latests changes...
-git pull
+# Make shell scripts executable
+chmod +x jobs/*.sh
 
 # Pull latest docker images
 echo Pulling latest images...

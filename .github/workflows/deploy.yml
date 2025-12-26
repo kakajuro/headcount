@@ -27,4 +27,6 @@ jobs:
           key: ${{ secrets.PASSWORD }}
           script: |
             cd var/www/headcount
+            git pull
+            chmod +x ./deploy.sh
             ./deploy.sh
