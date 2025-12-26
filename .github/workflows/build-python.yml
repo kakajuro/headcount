@@ -24,7 +24,7 @@ jobs:
         username: ${{ github.actor }}
         password: ${{ secrets.CONTAINER_TOKEN }}
 
-    - name: Build and publish new web image
+    - name: Build and publish new python image
       uses: docker/build-push-action@v6
       with:
         context: scripts
