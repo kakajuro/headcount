@@ -49,7 +49,7 @@ for app in response:
 
 print("Sending update email")
 
-with yagmail.SMTP({sender: "Hello"}, password) as yag:
+with yagmail.SMTP({sender: "Hello"}, password, port=587) as yag:
   yag.send(to = {sender: sender}, subject=subject, contents=body)
 
 print("Sent update to inbox!")
