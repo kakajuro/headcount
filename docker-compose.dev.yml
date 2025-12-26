@@ -8,8 +8,11 @@ services:
     restart: unless-stopped
     environment:
       - IS_DOCKERISED=1
+      - IS_PRODUCTION=1
     env_file:
       - ./scripts/.env
+    networks:
+      - headcount
 
   server:
     container_name: server
