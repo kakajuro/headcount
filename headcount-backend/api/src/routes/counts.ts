@@ -57,27 +57,6 @@ counts.get("/all/:name", async (c) => {
 
 });
 
-
-counts.get("/test", async (c) => {
-  try {
-    const query =
-    `SELECT A.id, A.shortname, A.name, C.usercountChrome, C.usercountFirefox, C.usercountEdge, C.created_at
-    FROM counts AS c
-    INNER JOIN apps as A ON C.appid = A.id
-    WHERE C.created_at = (
-      SELECT MAX(C2.created_at)
-      FROM counts AS C2
-      WHERE C2.appid = C.appid
-    ) AND A.deleted = 0
-    ORDER BY C.created_at DESC`;
-    const response = db.prepare(query).all();
-    return c.json(response, 200);
-  } catch (error:any) {
-    console.log(error.message);
-    return c.json({ error: "Internal Server Error" }, 500);
-  }
-});
-
 counts.get("/recent", async (c) => {
 
   try {
